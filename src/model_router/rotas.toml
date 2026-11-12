@@ -1,0 +1,92 @@
+# Mapa de funções -> modelo.
+#
+# Regra geral, pensada para NÃO perder qualidade:
+#   - Haiku 5.5  : tarefas curtas e objetivas (classificar, extrair campos).
+#   - Sonnet 5.5 : trabalho do dia a dia (resumir, traduzir, redigir, atender).
+#   - Opus 5.5   : o que exige raciocínio (código, análise, planejamento).
+#
+# Se o modelo mais barato recusar ou a resposta não passar na validação,
+# o roteador sobe automaticamente para o modelo em `escalar_para`.
+#
+# effort: low | medium | high | xhigh | max  (mais alto = mais cuidadoso e mais caro)
+
+[modelos.haiku]
+id = "claude-haiku-5-5"
+preco_entrada = 0.10   # US$ por 1M tokens
+preco_saida = 0.50
+
+[modelos.sonnet]
+id = "claude-sonnet-5-5"
+preco_entrada = 2.00
+preco_saida = 10.00
+
+[modelos.opus]
+id = "claude-opus-5-5"
+preco_entrada = 4.00
+preco_saida = 20.00
+
+# ---------------------------------------------------------------- Haiku
+
+[funcoes.classificar]
+descricao = "Classificar um texto em categorias (sentimento, assunto, prioridade, sim/não)."
+modelo = "haiku"
+effort = "low"
+max_tokens = 1024
+escalar_para = "sonnet"
+
+[funcoes.extrair]
+descricao = "Extrair dados estruturados de um texto (nomes, valores, datas, CNPJ, campos de nota)."
+modelo = "haiku"
+effort = "medium"
+max_tokens = 4096
+escalar_para = "sonnet"
+
+# ---------------------------------------------------------------- Sonnet
+
+[funcoes.resumir]
+descricao = "Resumir documentos, reuniões, e-mails ou conversas."
+modelo = "sonnet"
+effort = "medium"
+max_tokens = 8000
+escalar_para = "opus"
+
+[funcoes.traduzir]
+descricao = "Traduzir textos mantendo tom e termos técnicos."
+modelo = "sonnet"
+effort = "low"
+max_tokens = 16000
+escalar_para = "opus"
+
+[funcoes.redigir]
+descricao = "Escrever e-mails, mensagens, posts, propostas e textos comerciais."
+modelo = "sonnet"
+effort = "medium"
+max_tokens = 16000
+escalar_para = "opus"
+
+[funcoes.atendimento]
+descricao = "Responder clientes ou colaboradores em conversa (suporte, dúvidas, FAQ)."
+modelo = "sonnet"
+effort = "low"
+max_tokens = 8000
+escalar_para = "opus"
+
+# ---------------------------------------------------------------- Opus
+
+[funcoes.codigo]
+descricao = "Escrever, revisar ou corrigir código e consultas SQL."
+modelo = "opus"
+effort = "high"
+max_tokens = 16000
+
+[funcoes.analisar]
+descricao = "Análises que exigem raciocínio: financeiro, contratos, dados, comparação de cenários."
+modelo = "opus"
+effort = "high"
+max_tokens = 16000
+
+[funcoes.planejar]
+descricao = "Estratégia, planejamento, decisões complexas e problemas em várias etapas."
+modelo = "opus"
+effort = "high"
+max_tokens = 16000
